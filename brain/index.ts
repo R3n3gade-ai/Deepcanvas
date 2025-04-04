@@ -1,3 +1,4 @@
+import { auth } from "app/auth";
 import { API_PATH } from "../constants";
 import { Brain } from "./Brain";
 import type { RequestParams } from "./http-client";
@@ -17,6 +18,7 @@ type BaseApiParams = Omit<RequestParams, "signal" | "baseUrl" | "cancelToken">;
 const constructBaseApiParams = (): BaseApiParams => {
   return {
     credentials: "include",
+    secure: true,
   };
 };
 
@@ -27,6 +29,13 @@ const constructClient = () => {
   return new Brain({
     baseUrl,
     baseApiParams,
+    securityWorker: async () => {
+      return {
+        headers: {
+          Authorization: await auth.getAuthHeaderValue(),
+        },
+      };
+    },
   });
 };
 

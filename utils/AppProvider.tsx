@@ -37,7 +37,13 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         await applyStoredFirebaseConfig();
       } catch (error) {
         console.error("Failed to apply stored Firebase config:", error);
-        toast.error("Firebase configuration error. Please configure Firebase in Setup.");
+        toast.error("Firebase configuration error. Please visit the Setup page to configure Firebase.", {
+          action: {
+            label: "Go to Setup",
+            onClick: () => window.location.href = "/setup"
+          },
+          duration: 5000
+        });
       }
     };
     

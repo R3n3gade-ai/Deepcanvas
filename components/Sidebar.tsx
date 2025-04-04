@@ -2,12 +2,57 @@ import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { cn } from "../utils/cn";
 import { auth, useCurrentUser } from "app";
-import { Button } from "./Button"; interface SidebarProps { className?: string;
+import { Button } from "@/components/ui/button";
+
+function CRMIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      {...props}
+    >
+      <path d="M8 4v2H4v12h16v-2h4v8H0V4h8zm8 2v4h-1v5h-5v5H2V8h8v2h6V6h-5V1h10v5h-5z" />
+    </svg>
+  );
 }
 
-export function Sidebar({ className }: SidebarProps) { const navigate = useNavigate(); const location = useLocation(); const { user } = useCurrentUser(); const handleSignOut = async () => { await auth.signOut(); navigate("/"); }; const navigation = [
+interface SidebarProps { 
+  className?: string;
+}
+
+export function Sidebar({ className }: SidebarProps) { 
+  const navigate = useNavigate(); 
+  const location = useLocation(); 
+  const { user } = useCurrentUser(); 
+  
+  const handleSignOut = async () => { 
+    await auth.signOut(); 
+    navigate("/"); 
+  }; 
+  
+  // Navigation items definition
+  const publicNavigation = [
     { name: "Setup", path: "/setup", icon: SetupIcon },
-    { name: "Firebase Test", path: "/firebase-test", icon: SetupIcon }, { name: "Dashboard", path: "/dashboard", icon: DashboardIcon, divider: true }, { name: "Pipeline", path: "/pipeline", icon: PipelineIcon }, { name: "Accounts", path: "/accounts", icon: AccountsIcon }, { name: "Team", path: "/team", icon: TeamIcon }, { name: "Tasks", path: "/tasks", icon: TasksIcon }, { name: "Contacts", path: "/contacts", icon: ContactsIcon },]; return (<aside className={cn("flex flex-col w-64 h-screen bg-white border-r border-gray-200 shadow-sm", className)}
+    { name: "Firebase Test", path: "/firebase-test", icon: SetupIcon }, 
+    { name: "Login", path: "/login", icon: UserIcon }
+  ];
+  
+  const privateNavigation = [
+    { name: "CRM", path: "/crm", icon: CRMIcon, divider: true },
+    { name: "Tasks", path: "/tasks", icon: TasksIcon },
+    { name: "AI Chat", path: "/chat", icon: ChatIcon },
+    { name: "API Connections", path: "/connections", icon: ConnectionsIcon },
+    { name: "Workflows", path: "/workflows", icon: WorkflowIcon, divider: true },
+  ];
+  
+  // Determine which navigation items to show based on auth state
+  const navigation = user
+    ? [...publicNavigation.filter(item => item.path !== "/login"), ...privateNavigation]
+    : publicNavigation; 
+  
+  return (
+    <aside className={cn("flex flex-col w-64 h-screen bg-white border-r border-gray-200 shadow-sm", className)}
     >
       {/* Logo */}
       <div className="p-6 border-b border-gray-100">
@@ -17,35 +62,51 @@ export function Sidebar({ className }: SidebarProps) { const navigate = useNavig
       {/* Navigation */}
       <div className="flex-1 py-6 overflow-y-auto">
         <nav className="space-y-2 px-4">
-          {navigation.map((item, index) => { const isActive = location.pathname === item.path; return (<React.Fragment key={item.name}>
-                {index > 0 && item.divider && (<div className="mx-4 my-2 h-px bg-gray-200" />)}
-                <button onClick={() => navigate(item.path)} className={cn("flex items-center w-full px-4 py-3 text-left rounded-md transition-colors duration-150 group", isActive ? "bg-blue-50 text-blue-600 border-l-4 border-blue-600 pl-3" : "text-gray-700 hover:bg-gray-50 hover:text-gray-900")}
+          {navigation.map((item, index) => {
+            const isActive = location.pathname === item.path;
+            const showDivider = index > 0 && item.divider;
+            
+            return (
+              <React.Fragment key={item.name}>
+                {showDivider && (
+                  <div className="mx-4 my-2 h-px bg-gray-200" />
+                )}
+                <button 
+                  onClick={() => navigate(item.path)} 
+                  className={cn(
+                    "flex items-center w-full px-4 py-3 text-left rounded-md transition-colors duration-150 group", 
+                    isActive ? "bg-blue-50 text-blue-600 border-l-4 border-blue-600 pl-3" : "text-gray-700 hover:bg-gray-50 hover:text-gray-900"
+                  )}
                 >
                   <item.icon className={cn("mr-3 h-5 w-5 flex-shrink-0", isActive ? "text-blue-600" : "text-gray-400 group-hover:text-gray-500")} />
                   <span className="font-medium">{item.name}</span>
                 </button>
-              </React.Fragment>); })}
+              </React.Fragment>
+            );
+          })}
         </nav>
       </div>
 
       {/* User Profile */}
-      <div className="p-4 border-t border-gray-200 bg-gray-50">
-        <div className="flex items-center">
-          <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 flex-shrink-0">
-            <UserIcon className="h-5 w-5" />
+      {user && (
+        <div className="p-4 border-t border-gray-200 bg-gray-50">
+          <div className="flex items-center">
+            <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 flex-shrink-0">
+              <UserIcon className="h-5 w-5" />
+            </div>
+            <div className="ml-3 overflow-hidden">
+              <p className="text-sm font-medium text-gray-900 truncate">
+                {user?.email ? user.email.split('@')[0] : 'User'}
+              </p>
+              <p className="text-xs text-gray-500 truncate">{user?.email || 'user@example.com'}</p>
+            </div>
+            <Button variant="ghost" size="icon" className="ml-auto" onClick={handleSignOut} title="Sign out"
+            >
+              <LogoutIcon className="h-4 w-4 text-gray-500" />
+            </Button>
           </div>
-          <div className="ml-3 overflow-hidden">
-            <p className="text-sm font-medium text-gray-900 truncate">
-              {user?.email ? user.email.split('@')[0] : 'User'}
-            </p>
-            <p className="text-xs text-gray-500 truncate">{user?.email || 'user@example.com'}</p>
-          </div>
-          <Button variant="ghost" size="icon" className="ml-auto" onClick={handleSignOut} title="Sign out"
-          >
-            <LogoutIcon className="h-4 w-4 text-gray-500" />
-          </Button>
         </div>
-      </div>
+      )}
     </aside>);
 }
 
@@ -191,6 +252,46 @@ function SetupIcon(props: React.SVGProps<SVGSVGElement>) {
     >
       <path d="M11.47 3.84a.75.75 0 011.06 0l8.69 8.69a.75.75 0 101.06-1.06l-8.689-8.69a2.25 2.25 0 00-3.182 0l-8.69 8.69a.75.75 0 001.061 1.06l8.69-8.69z" />
       <path d="M12 5.432l8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 01-.75-.75v-4.5a.75.75 0 00-.75-.75h-3a.75.75 0 00-.75.75V21a.75.75 0 01-.75.75H5.625a1.875 1.875 0 01-1.875-1.875v-6.198c.03-.028.061-.056.091-.086L12 5.43z" />
+    </svg>
+  );
+}
+
+function ChatIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      {...props}
+    >
+      <path fillRule="evenodd" d="M4.848 2.771A49.144 49.144 0 0 1 12 2.25c2.43 0 4.817.178 7.152.52 1.978.292 3.348 2.024 3.348 3.97v6.02c0 1.946-1.37 3.678-3.348 3.97a48.901 48.901 0 0 1-3.476.383.39.39 0 0 0-.297.17l-2.755 4.133a.75.75 0 0 1-1.248 0l-2.755-4.133a.39.39 0 0 0-.297-.17 48.9 48.9 0 0 1-3.476-.384c-1.978-.29-3.348-2.024-3.348-3.97V6.741c0-1.946 1.37-3.68 3.348-3.97ZM6.75 8.25a.75.75 0 0 1 .75-.75h9a.75.75 0 0 1 0 1.5h-9a.75.75 0 0 1-.75-.75Zm.75 2.25a.75.75 0 0 0 0 1.5H12a.75.75 0 0 0 0-1.5H7.5Z" clipRule="evenodd" />
+    </svg>
+  );
+}
+
+function ConnectionsIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      {...props}
+    >
+      <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+      <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+    </svg>
+  );
+}
+
+function WorkflowIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      {...props}
+    >
+      <path d="M19 5v2h-4V5h4M9 5v6H5V5h4m10 8v6h-4v-6h4M9 17v2H5v-2h4M21 3h-8v6h8V3M11 3H3v10h8V3m10 8h-8v10h8V11m-10 4H3v6h8v-6z" />
     </svg>
   );
 }

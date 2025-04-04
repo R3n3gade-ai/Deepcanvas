@@ -6,7 +6,9 @@ import { getCurrentFirebaseApp, getCurrentFirebaseConfig, isUsingDefaultConfig, 
 import { getFirestore, doc, setDoc, collection, getDocs } from "firebase/firestore";
 import { initContactsData } from "utils/initContactsData";
 import { Contact } from "utils/types";
-import { AppProvider } from "utils/AppProvider";
+import { AppProvider } from "components/AppProvider";
+import { useCurrentUser } from "app";
+import { SignInOrUpForm } from "app/auth/SignInOrUpForm";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
@@ -16,9 +18,11 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 function SetupContent() {
   const navigate = useNavigate();
+  const { user, loading } = useCurrentUser();
   const [firebaseConfig, setFirebaseConfig] = useState<string>("");
   const [status, setStatus] = useState<{ success: boolean; message: string } | null>(null);
   const [isConfigured, setIsConfigured] = useState<boolean>(false);
+  const [showAuthForm, setShowAuthForm] = useState<boolean>(!user);
   
   // Check current configuration on page load
   useEffect(() => {
@@ -88,6 +92,13 @@ function SetupContent() {
       const app = getCurrentFirebaseApp();
       if (!app) {
         toast.error("Firebase app is not initialized. Please configure Firebase first.");
+        return;
+      }
+      
+      // Check if user is authenticated
+      if (!user) {
+        toast.error("You need to sign in first.");
+        setShowAuthForm(true);
         return;
       }
       
@@ -416,11 +427,16 @@ function SetupContent() {
     }
   };
 
+  // Show authentication form if needed
+  const handleAuthComplete = () => {
+    setShowAuthForm(false);
+  };
+
   return (
     <div className="flex h-screen bg-gray-50">
-      <Sidebar />
+      {user ? <Sidebar /> : null}
       
-      <main className="flex-1 overflow-y-auto">
+      <main className={`${user ? "flex-1" : "w-full"} overflow-y-auto`}>
         <div className="p-8">
           <h1 className="text-2xl font-bold mb-8">Setup</h1>
           
@@ -552,10 +568,34 @@ function SetupContent() {
                     </p>
                   </div>
                   
-                  <div className="flex justify-center">
+                  <div className="flex flex-col items-center gap-4">
+                    {!user && isConfigured && (
+                      <div className="w-full max-w-md p-4 bg-white rounded-lg shadow-sm mb-4">
+                        <h3 className="text-lg font-medium mb-2">Authentication Required</h3>
+                        <p className="text-gray-600 mb-4">You need to sign in first to initialize data.</p>
+                        {showAuthForm ? (
+                          <div className="mb-4">
+                            <SignInOrUpForm
+                              signInOptions={{
+                                google: true,
+                                emailAndPassword: true
+                              }}
+                            />
+                          </div>
+                        ) : (
+                          <Button 
+                            onClick={() => setShowAuthForm(true)}
+                            className="w-full"
+                          >
+                            Sign In / Sign Up
+                          </Button>
+                        )}
+                      </div>
+                    )}
                     <Button 
                       size="lg"
                       onClick={initializeFirestoreData}
+                      disabled={!user && isConfigured}
                     >
                       Initialize Firestore Data
                     </Button>

@@ -181,9 +181,9 @@ function FirebaseTestContent() {
 
   return (
     <div className="flex h-screen bg-gray-50">
-      <Sidebar />
+      {user ? <Sidebar /> : null}
       
-      <main className="flex-1 overflow-y-auto">
+      <main className={`${user ? "flex-1" : "w-full"} overflow-y-auto`}>
         <div className="p-8">
           <h1 className="text-2xl font-bold mb-8">Firebase Configuration Test</h1>
           

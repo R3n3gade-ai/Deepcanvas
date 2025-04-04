@@ -1,9 +1,5 @@
 #!/bin/bash
 
-corepack enable
-
-yarn set version stable
-
-yarn install 
-
-yarn dlx @yarnpkg/sdks vscode
+uv venv
+source ./venv/bin/activate
+uv pip install -r requirements.txt

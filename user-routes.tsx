@@ -9,25 +9,38 @@ import { UserGuard } from "app";
 
 const Accounts = lazy(() => import("./pages/Accounts.tsx"));
 const App = lazy(() => import("./pages/App.tsx"));
+const CRM = lazy(() => import("./pages/CRM.tsx"));
+const Chat = lazy(() => import("./pages/Chat.tsx"));
+const Connections = lazy(() => import("./pages/Connections.tsx"));
 const Contacts = lazy(() => import("./pages/Contacts.tsx"));
 const Dashboard = lazy(() => import("./pages/Dashboard.tsx"));
 const FirebaseTest = lazy(() => import("./pages/FirebaseTest.tsx"));
+const Login = lazy(() => import("./pages/Login.tsx"));
 const Pipeline = lazy(() => import("./pages/Pipeline.tsx"));
 const Setup = lazy(() => import("./pages/Setup.tsx"));
 const Tasks = lazy(() => import("./pages/Tasks.tsx"));
 const Team = lazy(() => import("./pages/Team.tsx"));
+const WorkflowBuilder = lazy(() => import("./pages/WorkflowBuilder.tsx"));
+const Workflows = lazy(() => import("./pages/Workflows.tsx"));
 
 export const userRoutes: RouteObject[] = [
 
 	{ path: "/accounts", element: <UserGuard><Accounts /></UserGuard>},
 	{ path: "/", element: <App />},
+	{ path: "/crm", element: <UserGuard><CRM /></UserGuard>},
+	{ path: "/chat", element: <UserGuard><Chat /></UserGuard>},
+	{ path: "/connections", element: <UserGuard><Connections /></UserGuard>},
 	{ path: "/contacts", element: <UserGuard><Contacts /></UserGuard>},
 	{ path: "/dashboard", element: <UserGuard><Dashboard /></UserGuard>},
 	{ path: "/firebase-test", element: <UserGuard><FirebaseTest /></UserGuard>},
 	{ path: "/firebasetest", element: <UserGuard><FirebaseTest /></UserGuard>},
+	{ path: "/login", element: <UserGuard><Login /></UserGuard>},
 	{ path: "/pipeline", element: <UserGuard><Pipeline /></UserGuard>},
 	{ path: "/setup", element: <UserGuard><Setup /></UserGuard>},
 	{ path: "/tasks", element: <UserGuard><Tasks /></UserGuard>},
 	{ path: "/team", element: <UserGuard><Team /></UserGuard>},
+	{ path: "/workflow-builder", element: <UserGuard><WorkflowBuilder /></UserGuard>},
+	{ path: "/workflowbuilder", element: <UserGuard><WorkflowBuilder /></UserGuard>},
+	{ path: "/workflows", element: <UserGuard><Workflows /></UserGuard>},
 
 ];

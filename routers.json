@@ -1,0 +1,1 @@
+{"routers":{"workflows":{"name":"workflows","version":"2025-04-02T22:34:26","disableAuth":false},"firestore_schema":{"name":"firestore_schema","version":"2025-03-28T17:21:28","disableAuth":false},"ai_chat":{"name":"ai_chat","version":"2025-04-02T15:18:59","disableAuth":false},"api_connections":{"name":"api_connections","version":"2025-04-02T15:33:36","disableAuth":false}}}

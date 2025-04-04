@@ -122,7 +122,9 @@ export const isUsingDefaultConfig = (): boolean => {
   return (
     currentConfig.apiKey === "AIzaSyAEjyXpJQPCuKWZP9pffOZeqcejXi6F_xU" ||
     !currentConfig.apiKey ||
-    currentConfig.projectId === "your-project-id"
+    currentConfig.projectId === "your-project-id" ||
+    currentConfig.projectId === "" ||
+    !currentConfig.projectId
   );
 };
 
@@ -166,6 +168,14 @@ export const applyStoredFirebaseConfig = async (): Promise<void> => {
     
     // Apply the saved config
     console.log("Applying stored Firebase configuration...");
+    // Only initialize if the config is different from the current one
+    if (currentApp && 
+        currentApp.options.apiKey === config.apiKey && 
+        currentApp.options.projectId === config.projectId) {
+      console.log("Already using the saved Firebase config, no need to reinitialize");
+      return;
+    }
+    
     await initializeFirebaseConfig(config);
   } catch (error) {
     console.error("Error applying stored Firebase config:", error);

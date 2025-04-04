@@ -4,11 +4,8 @@ import firestoreService from './firestoreService';
 import { logActivity } from './activityTracking';
 import { Contact } from './types';
 
-// Collection name in Firestore
+// Collection names in Firestore
 export const CONTACTS_COLLECTION = 'contacts';
-export const ACTIVITIES_COLLECTION = 'activities';
-
-// Activities collection name in Firestore
 export const ACTIVITIES_COLLECTION = 'activities';
 
 // Types for the store state

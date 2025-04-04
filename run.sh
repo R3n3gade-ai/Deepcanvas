@@ -1,3 +1,5 @@
 #!/bin/bash
 
-yarn dev
+source .venv/bin/activate
+
+uvicorn main:app --reload 

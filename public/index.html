@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="DeepCanvas AI Hub"
+    />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <title>DeepCanvas AI Hub</title>
+    <style>
+      /* Basic Reset */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        background-color: #f5f7fa;
+      }
+
+      /* App Layout */
+      .app {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+
+      .header {
+        background-color: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #3b82f6;
+      }
+
+      nav {
+        display: flex;
+        gap: 1.5rem;
+      }
+
+      nav a {
+        text-decoration: none;
+        color: #4b5563;
+        font-weight: 500;
+        padding: 0.5rem 0;
+        border-bottom: 2px solid transparent;
+        transition: all 0.2s;
+      }
+
+      nav a:hover, nav a.active {
+        color: #3b82f6;
+        border-bottom: 2px solid #3b82f6;
+      }
+
+      .main {
+        flex: 1;
+        padding: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        width: 100%;
+      }
+
+      /* Page Styles */
+      .page {
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        padding: 2rem;
+      }
+
+      h1 {
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+        color: #1f2937;
+      }
+
+      /* Card Styles */
+      .card-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin-top: 1.5rem;
+      }
+
+      .card {
+        background-color: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        padding: 1.5rem;
+        transition: all 0.2s;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        cursor: pointer;
+      }
+
+      .card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      }
+
+      .card h2 {
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+        color: #1f2937;
+      }
+
+      .card p {
+        color: #6b7280;
+        margin-bottom: 1rem;
+      }
+
+      /* Button & Link Styles */
+      .button {
+        display: inline-block;
+        background-color: #3b82f6;
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        text-decoration: none;
+        font-weight: 500;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.2s;
+      }
+
+      .button:hover {
+        background-color: #2563eb;
+      }
+
+      a {
+        color: #3b82f6;
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      /* Views */
+      .view {
+        display: none;
+      }
+
+      .view.active {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+
+    <!-- Static HTML Version -->
+    <div class="app" id="static-app">
+      <header class="header">
+        <div class="logo">DeepCanvas</div>
+        <nav>
+          <a href="#home" class="nav-link active" data-view="home">Home</a>
+          <a href="#agents" class="nav-link" data-view="agents">Agents</a>
+          <a href="#brain" class="nav-link" data-view="brain">Knowledge</a>
+          <a href="#api-connect" class="nav-link" data-view="api-connect">API Connect</a>
+        </nav>
+      </header>
+
+      <main class="main">
+        <!-- Home View -->
+        <div id="home-view" class="view active">
+          <div class="page">
+            <h1>Welcome to DeepCanvas</h1>
+            <p>Your AI Hub for building and managing AI agents, knowledge bases, and more.</p>
+
+            <div class="card-container">
+              <div class="card" data-navigate="agents">
+                <h2>AI Agents</h2>
+                <p>Create and manage your custom AI agents</p>
+                <a href="#" class="button" data-navigate="agent-builder">Create Agent</a>
+              </div>
+
+              <div class="card" data-navigate="brain">
+                <h2>Knowledge Base</h2>
+                <p>Manage your AI knowledge base</p>
+                <a href="#" class="button">Add Knowledge</a>
+              </div>
+
+              <div class="card" data-navigate="api-connect">
+                <h2>API Connect</h2>
+                <p>Connect to external APIs and services</p>
+                <a href="#" class="button">Add Connection</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Agents View -->
+        <div id="agents-view" class="view">
+          <div class="page">
+            <h1>AI Agents</h1>
+            <p>Create and manage your custom AI agents</p>
+            <a href="#" class="button" data-navigate="agent-builder">Create New Agent</a>
+
+            <div class="card-container">
+              <div class="card" data-navigate="agent-chat">
+                <h2>Sample Agent</h2>
+                <p>A sample AI agent for demonstration</p>
+                <a href="#" class="button">Chat with Agent</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Other views would go here -->
+      </main>
+    </div>
+
+    <!-- React App Root -->
+    <div id="root" style="display: none;"></div>
+
+    <script>
+      // Simple navigation
+      document.addEventListener('DOMContentLoaded', function() {
+        // Handle navigation links
+        document.querySelectorAll('.nav-link, [data-navigate]').forEach(link => {
+          link.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            const viewName = this.dataset.view || this.dataset.navigate;
+            navigateTo(viewName);
+          });
+        });
+
+        // Handle card clicks
+        document.querySelectorAll('.card').forEach(card => {
+          card.addEventListener('click', function() {
+            const viewName = this.dataset.navigate;
+            if (viewName) {
+              navigateTo(viewName);
+            }
+          });
+        });
+      });
+
+      function navigateTo(viewName) {
+        // Hide all views
+        document.querySelectorAll('.view').forEach(view => {
+          view.classList.remove('active');
+        });
+
+        // Show the selected view
+        const targetView = document.getElementById(viewName + '-view');
+        if (targetView) {
+          targetView.classList.add('active');
+        }
+
+        // Update navigation links
+        document.querySelectorAll('.nav-link').forEach(link => {
+          link.classList.remove('active');
+          if (link.dataset.view === viewName) {
+            link.classList.add('active');
+          }
+        });
+      }
+    </script>
+  </body>
+</html>

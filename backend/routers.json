@@ -1,1 +1,1 @@
-{"routers":{"firestore_schema":{"name":"firestore_schema","version":"2025-03-28T17:21:28","disableAuth":false}}}
+{"routers":{"firestore_schema":{"name":"firestore_schema","version":"2025-03-28T17:21:28","disableAuth":false},"workflows":{"name":"workflows","version":"2023-06-01T00:00:00","disableAuth":false},"api_connections":{"name":"api_connections","version":"2023-06-01T00:00:00","disableAuth":false}}}

@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeepCanvas AI Hub</title>
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f7fa;
+        }
+
+        /* App Layout */
+        .app {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .header {
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #3b82f6;
+        }
+
+        nav {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #4b5563;
+            font-weight: 500;
+            padding: 0.5rem 0;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        nav a:hover, nav a.active {
+            color: #3b82f6;
+            border-bottom: 2px solid #3b82f6;
+        }
+
+        .main {
+            flex: 1;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Page Styles */
+        .page {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            padding: 2rem;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+
+        /* Card Styles */
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .card {
+            background-color: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: all 0.2s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h2 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: #1f2937;
+        }
+
+        .card p {
+            color: #6b7280;
+            margin-bottom: 1rem;
+        }
+
+        /* Button & Link Styles */
+        .button {
+            display: inline-block;
+            background-color: #3b82f6;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .button:hover {
+            background-color: #2563eb;
+        }
+
+        a {
+            color: #3b82f6;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Views */
+        .view {
+            display: none;
+        }
+
+        .view.active {
+            display: block;
+        }
+
+        /* Chat Styles */
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 400px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            overflow: hidden;
+            margin: 1.5rem 0;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message {
+            margin-bottom: 1rem;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            max-width: 80%;
+        }
+
+        .message.agent {
+            background-color: #f3f4f6;
+            align-self: flex-start;
+        }
+
+        .message.user {
+            background-color: #3b82f6;
+            color: white;
+            align-self: flex-end;
+        }
+
+        .chat-input {
+            display: flex;
+            padding: 0.75rem;
+            border-top: 1px solid #e5e7eb;
+            background-color: #f9fafb;
+        }
+
+        .chat-input input {
+            flex: 1;
+            margin-right: 0.5rem;
+            padding: 0.5rem;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 1rem;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <header class="header">
+            <div class="logo">DeepCanvas</div>
+            <nav>
+                <a href="#home" class="nav-link active" data-view="home">Home</a>
+                <a href="#agents" class="nav-link" data-view="agents">Agents</a>
+                <a href="#brain" class="nav-link" data-view="brain">Knowledge</a>
+                <a href="#api-connect" class="nav-link" data-view="api-connect">API Connect</a>
+            </nav>
+        </header>
+
+        <main class="main">
+            <!-- Home View -->
+            <div id="home-view" class="view active">
+                <div class="page">
+                    <h1>Welcome to DeepCanvas</h1>
+                    <p>Your AI Hub for building and managing AI agents, knowledge bases, and more.</p>
+                    
+                    <div class="card-container">
+                        <div class="card" data-navigate="agents">
+                            <h2>AI Agents</h2>
+                            <p>Create and manage your custom AI agents</p>
+                            <a href="#" class="button" data-navigate="agent-builder">Create Agent</a>
+                        </div>
+                        
+                        <div class="card" data-navigate="brain">
+                            <h2>Knowledge Base</h2>
+                            <p>Manage your AI knowledge base</p>
+                            <a href="#" class="button">Add Knowledge</a>
+                        </div>
+                        
+                        <div class="card" data-navigate="api-connect">
+                            <h2>API Connect</h2>
+                            <p>Connect to external APIs and services</p>
+                            <a href="#" class="button">Add Connection</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Agents View -->
+            <div id="agents-view" class="view">
+                <div class="page">
+                    <h1>AI Agents</h1>
+                    <p>Create and manage your custom AI agents</p>
+                    <a href="#" class="button" data-navigate="agent-builder">Create New Agent</a>
+                    
+                    <div class="card-container">
+                        <div class="card" data-navigate="agent-chat">
+                            <h2>Sample Agent</h2>
+                            <p>A sample AI agent for demonstration</p>
+                            <a href="#" class="button">Chat with Agent</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Agent Builder View -->
+            <div id="agent-builder-view" class="view">
+                <div class="page">
+                    <h1>Agent Builder</h1>
+                    <p>Create and configure your AI agent</p>
+                    
+                    <div style="max-width: 600px; margin-top: 1.5rem;">
+                        <div class="form-group">
+                            <label>Agent Name</label>
+                            <input type="text" placeholder="Enter agent name">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea placeholder="Describe what your agent does"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Personality</label>
+                            <select>
+                                <option>Professional Assistant</option>
+                                <option>Creative Collaborator</option>
+                                <option>Technical Expert</option>
+                                <option>Friendly Guide</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Model</label>
+                            <select>
+                                <option>Gemini 1.5 Pro</option>
+                                <option>Gemini 1.0 Pro</option>
+                                <option>GPT-4o</option>
+                                <option>Claude 3 Opus</option>
+                            </select>
+                        </div>
+                        
+                        <button class="button" data-navigate="agents">Save Agent</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Agent Chat View -->
+            <div id="agent-chat-view" class="view">
+                <div class="page">
+                    <h1>Agent Chat</h1>
+                    
+                    <div class="chat-container">
+                        <div class="chat-messages">
+                            <div class="message agent">Hello! I'm your AI assistant. How can I help you today?</div>
+                            <div class="message user">Can you help me with a project?</div>
+                            <div class="message agent">Of course! I'd be happy to help with your project. Could you tell me more about what you're working on?</div>
+                        </div>
+                        <div class="chat-input">
+                            <input type="text" placeholder="Type your message...">
+                            <button class="button" id="send-button">Send</button>
+                        </div>
+                    </div>
+                    
+                    <a href="#" data-navigate="agents">Back to Agents</a>
+                </div>
+            </div>
+
+            <!-- Brain View -->
+            <div id="brain-view" class="view">
+                <div class="page">
+                    <h1>Knowledge Base</h1>
+                    <p>This page is under construction. You'll be able to manage your AI knowledge base here.</p>
+                    <a href="#" data-navigate="home">Back to Home</a>
+                </div>
+            </div>
+
+            <!-- API Connect View -->
+            <div id="api-connect-view" class="view">
+                <div class="page">
+                    <h1>API Connect</h1>
+                    <p>This page is under construction. You'll be able to connect to external APIs and services here.</p>
+                    <a href="#" data-navigate="home">Back to Home</a>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Simple navigation
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle navigation links
+            document.querySelectorAll('.nav-link, [data-navigate]').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const viewName = this.dataset.view || this.dataset.navigate;
+                    navigateTo(viewName);
+                });
+            });
+
+            // Handle card clicks
+            document.querySelectorAll('.card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const viewName = this.dataset.navigate;
+                    if (viewName) {
+                        navigateTo(viewName);
+                    }
+                });
+            });
+
+            // Handle chat
+            const chatInput = document.querySelector('.chat-input input');
+            const sendButton = document.getElementById('send-button');
+            const chatMessages = document.querySelector('.chat-messages');
+
+            if (sendButton && chatInput && chatMessages) {
+                sendButton.addEventListener('click', function() {
+                    sendMessage();
+                });
+
+                chatInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        sendMessage();
+                    }
+                });
+
+                function sendMessage() {
+                    const message = chatInput.value.trim();
+                    if (message) {
+                        // Add user message
+                        const userMessage = document.createElement('div');
+                        userMessage.className = 'message user';
+                        userMessage.textContent = message;
+                        chatMessages.appendChild(userMessage);
+                        
+                        // Clear input
+                        chatInput.value = '';
+                        
+                        // Scroll to bottom
+                        chatMessages.scrollTop = chatMessages.scrollHeight;
+                        
+                        // Simulate agent response after a delay
+                        setTimeout(() => {
+                            const agentMessage = document.createElement('div');
+                            agentMessage.className = 'message agent';
+                            agentMessage.textContent = "I'm a simulated AI response. In a real implementation, this would connect to Vertex AI/Gemini.";
+                            chatMessages.appendChild(agentMessage);
+                            
+                            // Scroll to bottom
+                            chatMessages.scrollTop = chatMessages.scrollHeight;
+                        }, 1000);
+                    }
+                }
+            }
+        });
+
+        function navigateTo(viewName) {
+            // Hide all views
+            document.querySelectorAll('.view').forEach(view => {
+                view.classList.remove('active');
+            });
+            
+            // Show the selected view
+            const targetView = document.getElementById(viewName + '-view');
+            if (targetView) {
+                targetView.classList.add('active');
+            }
+            
+            // Update navigation links
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+                if (link.dataset.view === viewName) {
+                    link.classList.add('active');
+                }
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,315 @@
+/* GrapesJS Editor Custom Styles */
+
+.gjs-block {
+  width: 100%;
+  height: auto;
+  min-height: 45px;
+  padding: 1em;
+  margin-bottom: 10px;
+  text-align: center;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  border-radius: 3px;
+  background-color: white;
+  cursor: move;
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+  position: relative;
+}
+
+.gjs-block:hover {
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+.gjs-block-label {
+  font-size: 0.8rem;
+  font-weight: normal;
+  color: #444;
+}
+
+.gjs-block-category {
+  margin-bottom: 1em;
+}
+
+.gjs-block-category-title {
+  font-weight: bold;
+  font-size: 0.9rem;
+  padding: 0.5em;
+  margin-bottom: 0.5em;
+  background-color: #f5f5f5;
+  border-radius: 3px;
+}
+
+.gjs-pn-panel {
+  padding: 0;
+  border-radius: 3px;
+}
+
+.gjs-pn-views {
+  border-bottom: 1px solid #ddd;
+  padding: 0.5em;
+}
+
+.gjs-pn-views-container {
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+  margin-top: 0.5em;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.gjs-cv-canvas {
+  background-color: #f5f5f5;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.gjs-frame-wrapper {
+  padding: 1em;
+}
+
+.gjs-frame {
+  border-radius: 3px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+.gjs-layer {
+  padding: 0.5em;
+  background-color: #fff;
+  margin-bottom: 0.2em;
+  border-radius: 3px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.gjs-layer.gjs-selected {
+  background-color: #f0f8ff;
+  border-left: 2px solid #3b82f6;
+}
+
+.gjs-layer-title {
+  font-size: 0.8rem;
+}
+
+.gjs-layer-count {
+  font-size: 0.7rem;
+  color: #999;
+}
+
+.gjs-sm-sector {
+  margin-bottom: 1em;
+  background-color: #fff;
+  border-radius: 3px;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.gjs-sm-sector-title {
+  padding: 0.5em;
+  background-color: #f5f5f5;
+  font-weight: bold;
+  font-size: 0.9rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.gjs-sm-properties {
+  padding: 0.5em;
+}
+
+.gjs-sm-label {
+  font-size: 0.8rem;
+  margin-bottom: 0.3em;
+}
+
+.gjs-field {
+  border-radius: 3px;
+  box-shadow: none;
+  border: 1px solid #ddd;
+}
+
+.gjs-field:focus {
+  border-color: #3b82f6;
+}
+
+.gjs-btn-prim {
+  background-color: #3b82f6;
+  border-radius: 3px;
+}
+
+.gjs-btn-prim:hover {
+  background-color: #2563eb;
+}
+
+.gjs-four-color {
+  color: #3b82f6;
+}
+
+.gjs-four-color-h:hover {
+  color: #2563eb;
+}
+
+.gjs-mdl-dialog {
+  border-radius: 5px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+.gjs-mdl-header {
+  padding: 1em;
+  background-color: #f5f5f5;
+  border-bottom: 1px solid #ddd;
+}
+
+.gjs-mdl-content {
+  padding: 1em;
+}
+
+.gjs-mdl-btn-close {
+  font-size: 1.2rem;
+}
+
+.gjs-toolbar {
+  background-color: #3b82f6;
+  border-radius: 3px;
+}
+
+.gjs-toolbar-item {
+  padding: 0.3em;
+}
+
+.gjs-toolbar-item svg {
+  fill: white;
+}
+
+.gjs-rte-toolbar {
+  border-radius: 3px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+}
+
+.gjs-rte-actionbar {
+  padding: 0.3em;
+}
+
+.gjs-rte-action {
+  padding: 0.3em;
+  border-radius: 3px;
+}
+
+.gjs-rte-action:hover {
+  background-color: #f5f5f5;
+}
+
+/* Custom editor layout */
+.grapesjs-editor-container {
+  display: flex;
+  height: 100%;
+  overflow: hidden;
+}
+
+.editor-sidebar {
+  width: 260px;
+  background-color: #f8f9fa;
+  border-right: 1px solid #dee2e6;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.editor-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.editor-toolbar {
+  padding: 8px;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #dee2e6;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.editor-canvas {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+.panel-tab {
+  padding: 8px 12px;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  font-weight: 500;
+  font-size: 14px;
+  color: #6c757d;
+}
+
+.panel-tab.active {
+  border-bottom-color: #3b82f6;
+  color: #3b82f6;
+}
+
+.panel-content {
+  padding: 12px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.device-button {
+  padding: 4px 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #6c757d;
+  font-size: 16px;
+}
+
+.device-button.active {
+  color: #3b82f6;
+}
+
+.action-button {
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 8px;
+}
+
+.action-button.primary {
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+}
+
+.action-button.secondary {
+  background-color: white;
+  color: #3b82f6;
+  border: 1px solid #3b82f6;
+}
+
+.action-button.success {
+  background-color: #10b981;
+  color: white;
+  border: none;
+}
+
+.action-button svg {
+  margin-right: 4px;
+}
+
+/* Make sure the editor takes full height */
+.gjs-editor {
+  height: 100% !important;
+}
+
+.gjs-cv-canvas {
+  height: 100% !important;
+  top: 0 !important;
+}
+
+/* Fix for the editor to take full width and height */
+.gjs-editor-cont {
+  height: 100% !important;
+}
